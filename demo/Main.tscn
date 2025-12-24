@@ -1,0 +1,197 @@
+[gd_scene load_steps=6 format=3 uid="uid://daro5x6n3pd26"]
+
+[ext_resource type="Script" uid="uid://bcqb5hwnjbtob" path="res://Main.gd" id="1_wt50o"]
+[ext_resource type="Texture2D" uid="uid://ccwvfcumkwxsd" path="res://assets/oauth2-android.png" id="2_qti4s"]
+[ext_resource type="Texture2D" uid="uid://bhgbr1eclf27y" path="res://assets/oauth2-ios.png" id="3_cm0pq"]
+[ext_resource type="Script" uid="uid://bedefk2midub6" path="res://addons/OAuth2Plugin/OAuth2.gd" id="4_cm0pq"]
+[ext_resource type="Script" uid="uid://ch285f4sp6k3g" path="res://addons/DeeplinkPlugin/Deeplink.gd" id="5_fos0i"]
+
+[node name="Main" type="Node"]
+script = ExtResource("1_wt50o")
+
+[node name="CanvasLayer" type="CanvasLayer" parent="."]
+
+[node name="MainContainer" type="MarginContainer" parent="CanvasLayer"]
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+grow_horizontal = 2
+grow_vertical = 2
+size_flags_horizontal = 3
+size_flags_vertical = 3
+theme_override_constants/margin_left = 10
+theme_override_constants/margin_top = 25
+theme_override_constants/margin_right = 10
+theme_override_constants/margin_bottom = 10
+
+[node name="VBoxContainer" type="VBoxContainer" parent="CanvasLayer/MainContainer"]
+custom_minimum_size = Vector2(400, 0)
+layout_mode = 2
+theme_override_constants/separation = 10
+
+[node name="TextureHBoxContainer" type="HBoxContainer" parent="CanvasLayer/MainContainer/VBoxContainer"]
+layout_mode = 2
+size_flags_horizontal = 4
+size_flags_vertical = 0
+theme_override_constants/separation = 40
+
+[node name="AndroidTextureRect" type="TextureRect" parent="CanvasLayer/MainContainer/VBoxContainer/TextureHBoxContainer"]
+custom_minimum_size = Vector2(0, 96)
+layout_mode = 2
+texture = ExtResource("2_qti4s")
+expand_mode = 3
+stretch_mode = 5
+
+[node name="iOSTextureRect" type="TextureRect" parent="CanvasLayer/MainContainer/VBoxContainer/TextureHBoxContainer"]
+custom_minimum_size = Vector2(0, 128)
+layout_mode = 2
+texture = ExtResource("3_cm0pq")
+expand_mode = 3
+stretch_mode = 5
+
+[node name="HBoxContainer" type="HBoxContainer" parent="CanvasLayer/MainContainer/VBoxContainer"]
+layout_mode = 2
+size_flags_vertical = 0
+
+[node name="Label" type="Label" parent="CanvasLayer/MainContainer/VBoxContainer/HBoxContainer"]
+layout_mode = 2
+size_flags_horizontal = 3
+theme_override_font_sizes/font_size = 24
+text = "OAuth 2.0 Demo"
+horizontal_alignment = 1
+
+[node name="StatusHBoxContainer" type="HBoxContainer" parent="CanvasLayer/MainContainer/VBoxContainer"]
+layout_mode = 2
+size_flags_vertical = 0
+theme_override_constants/separation = 10
+
+[node name="TitleLabel" type="Label" parent="CanvasLayer/MainContainer/VBoxContainer/StatusHBoxContainer"]
+layout_mode = 2
+text = "Status:"
+
+[node name="ValueLabel" type="Label" parent="CanvasLayer/MainContainer/VBoxContainer/StatusHBoxContainer"]
+custom_minimum_size = Vector2(200, 0)
+layout_mode = 2
+size_flags_horizontal = 3
+autowrap_mode = 2
+
+[node name="GoogleButton" type="Button" parent="CanvasLayer/MainContainer/VBoxContainer"]
+custom_minimum_size = Vector2(200, 40)
+layout_mode = 2
+size_flags_horizontal = 4
+text = "Google Login"
+
+[node name="DiscordButton" type="Button" parent="CanvasLayer/MainContainer/VBoxContainer"]
+custom_minimum_size = Vector2(200, 40)
+layout_mode = 2
+size_flags_horizontal = 4
+text = "Discord Login"
+
+[node name="GithubButton" type="Button" parent="CanvasLayer/MainContainer/VBoxContainer"]
+custom_minimum_size = Vector2(200, 40)
+layout_mode = 2
+size_flags_horizontal = 4
+text = "Github Login"
+
+[node name="LogoutButton" type="Button" parent="CanvasLayer/MainContainer/VBoxContainer"]
+custom_minimum_size = Vector2(200, 40)
+layout_mode = 2
+size_flags_horizontal = 4
+text = "Logout"
+
+[node name="RichTextLabel" type="RichTextLabel" parent="CanvasLayer/MainContainer/VBoxContainer"]
+custom_minimum_size = Vector2(0, 210)
+layout_mode = 2
+size_flags_vertical = 3
+theme_override_font_sizes/normal_font_size = 14
+scroll_following = true
+
+[node name="GoogleOAuth2" type="Node" parent="."]
+script = ExtResource("4_cm0pq")
+provider_auth_endpoint = "https://accounts.google.com/o/oauth2/v2/auth"
+provider_token_endpoint = "https://oauth2.googleapis.com/token"
+provider_scopes = PackedStringArray("openid", "profile", "email")
+provider_parameters = {
+"access_type": "offline",
+"prompt": "consent"
+}
+android_client_id = "854928845060-441ot0moa19jlif3farnu2413u0o17hq.apps.googleusercontent.com"
+android_redirect_uri = "com.googleusercontent.apps.854928845060-441ot0moa19jlif3farnu2413u0o17hq:/auth/callback"
+android_deeplink_path = NodePath("Deeplink_Android")
+ios_client_id = "854928845060-kjgra3jv1o8gbbf44jino23r95f26seu.apps.googleusercontent.com"
+ios_redirect_uri = "com.googleusercontent.apps.854928845060-kjgra3jv1o8gbbf44jino23r95f26seu:/oauth2redirect"
+ios_deeplink_path = NodePath("Deeplink_iOS")
+_client_secret = ""
+
+[node name="Deeplink_Android" type="Node" parent="GoogleOAuth2"]
+script = ExtResource("5_fos0i")
+scheme = "com.googleusercontent.apps.854928845060-441ot0moa19jlif3farnu2413u0o17hq"
+path_prefix = "/auth/callback"
+enabled_platforms = 1
+metadata/_custom_type_script = "uid://ch285f4sp6k3g"
+
+[node name="Deeplink_iOS" type="Node" parent="GoogleOAuth2"]
+script = ExtResource("5_fos0i")
+scheme = "com.googleusercontent.apps.854928845060-kjgra3jv1o8gbbf44jino23r95f26seu"
+path_prefix = "/oauth2redirect"
+enabled_platforms = 2
+metadata/_custom_type_script = "uid://ch285f4sp6k3g"
+
+[node name="DiscordOAuth2" type="Node" parent="."]
+script = ExtResource("4_cm0pq")
+provider = 3
+provider_auth_endpoint = "https://discord.com/api/oauth2/authorize"
+provider_token_endpoint = "https://discord.com/api/oauth2/token"
+provider_scopes = PackedStringArray("identify", "email")
+android_client_id = "1452145666771128534"
+android_client_secret = "PveoIfZAQc3sfndz1H23q5gSzMzlbWvo"
+android_redirect_uri = "oauth2demo://auth/callback"
+android_deeplink_path = NodePath("Deeplink")
+ios_client_id = "1452145666771128534"
+ios_client_secret = "PveoIfZAQc3sfndz1H23q5gSzMzlbWvo"
+ios_redirect_uri = "oauth2demo://auth/callback"
+ios_deeplink_path = NodePath("../GitHubOAuth2/Deeplink")
+_client_secret = ""
+metadata/_custom_type_script = "uid://bedefk2midub6"
+
+[node name="Deeplink" type="Node" parent="DiscordOAuth2"]
+script = ExtResource("5_fos0i")
+scheme = "oauth2demo"
+metadata/_custom_type_script = "uid://ch285f4sp6k3g"
+
+[node name="GitHubOAuth2" type="Node" parent="."]
+script = ExtResource("4_cm0pq")
+provider = 4
+provider_auth_endpoint = "https://github.com/login/oauth/authorize"
+provider_token_endpoint = "https://github.com/login/oauth/access_token"
+provider_scopes = PackedStringArray("read:user", "user:email")
+provider_pkce_enabled = false
+android_client_id = "Ov23lic9l6wvOe0ykb76"
+android_client_secret = "75d1ddad9ff5d4ab4a25f02646f158b3d3bc6839"
+android_redirect_uri = "oauth2demo://auth/callback"
+android_deeplink_path = NodePath("Deeplink")
+ios_client_id = "Ov23lic9l6wvOe0ykb76"
+ios_client_secret = "75d1ddad9ff5d4ab4a25f02646f158b3d3bc6839"
+ios_redirect_uri = "oauth2demo://auth/callback"
+ios_deeplink_path = NodePath("Deeplink")
+_client_secret = ""
+metadata/_custom_type_script = "uid://bedefk2midub6"
+
+[node name="Deeplink" type="Node" parent="GitHubOAuth2"]
+script = ExtResource("5_fos0i")
+scheme = "oauth2demo"
+metadata/_custom_type_script = "uid://ch285f4sp6k3g"
+
+[connection signal="pressed" from="CanvasLayer/MainContainer/VBoxContainer/GoogleButton" to="." method="_on_google_button_pressed"]
+[connection signal="pressed" from="CanvasLayer/MainContainer/VBoxContainer/DiscordButton" to="." method="_on_discord_button_pressed"]
+[connection signal="pressed" from="CanvasLayer/MainContainer/VBoxContainer/GithubButton" to="." method="_on_github_button_pressed"]
+[connection signal="pressed" from="CanvasLayer/MainContainer/VBoxContainer/LogoutButton" to="." method="_on_logout_button_pressed"]
+[connection signal="auth_error" from="GoogleOAuth2" to="." method="_on_google_o_auth_2_auth_error"]
+[connection signal="auth_started" from="GoogleOAuth2" to="." method="_on_google_o_auth_2_auth_started"]
+[connection signal="auth_success" from="GoogleOAuth2" to="." method="_on_google_o_auth_2_auth_success"]
+[connection signal="auth_error" from="DiscordOAuth2" to="." method="_on_discord_o_auth_2_auth_error"]
+[connection signal="auth_started" from="DiscordOAuth2" to="." method="_on_discord_o_auth_2_auth_started"]
+[connection signal="auth_success" from="DiscordOAuth2" to="." method="_on_discord_o_auth_2_auth_success"]
+[connection signal="auth_error" from="GitHubOAuth2" to="." method="_on_github_o_auth_2_auth_error"]
+[connection signal="auth_started" from="GitHubOAuth2" to="." method="_on_github_o_auth_2_auth_started"]
+[connection signal="auth_success" from="GitHubOAuth2" to="." method="_on_github_o_auth_2_auth_success"]
